@@ -80,15 +80,52 @@ el('fCharInput').addEventListener('keydown', (e) => {
   if(e.key === 'Enter'){ e.preventDefault(); el('btnAddChar').click(); }
 });
 
-el('fCover').addEventListener('input', () => {
-  el('fCoverPreview').src = el('fCover').value;
+/* ---------- upload foto cover dari perangkat ---------- */
+const MAX_W = 900; // lebar maksimal, biar file tidak terlalu berat di localStorage
+
+function resizeAndStore(file){
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      const img = new Image();
+      img.onload = () => {
+        const scale = Math.min(1, MAX_W / img.width);
+        const canvas = document.createElement('canvas');
+        canvas.width = img.width * scale;
+        canvas.height = img.height * scale;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        resolve(canvas.toDataURL('image/jpeg', 0.85));
+      };
+      img.onerror = reject;
+      img.src = ev.target.result;
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+el('fCoverFile').addEventListener('change', async (e) => {
+  const file = e.target.files[0];
+  if(!file) return;
+  el('coverHint').textContent = 'Memproses foto...';
+  try{
+    const dataUrl = await resizeAndStore(file);
+    el('fCoverData').value = dataUrl;
+    el('fCoverPreview').src = dataUrl;
+    el('coverHint').textContent = 'Foto siap disimpan.';
+  }catch(err){
+    el('coverHint').textContent = 'Gagal memproses foto, coba foto lain.';
+  }
 });
 
 /* ---------- form anime (tambah / edit) ---------- */
 function resetForm(){
   el('animeForm').reset();
   el('animeId').value = '';
+  el('fCoverData').value = '';
   el('fCoverPreview').src = '';
+  el('coverHint').textContent = 'Pilih foto dari galeri/kamera HP. Otomatis dikompres agar ringan.';
   editingChars = [];
   renderChars();
   el('formTitle').textContent = 'Tambah Anime';
@@ -101,15 +138,23 @@ el('animeForm').addEventListener('submit', (e) => {
   if(!title) return;
 
   const existingId = el('animeId').value;
+  const oldAnime = existingId ? DB.getById(existingId) : null;
   const anime = {
     id: existingId || DB.makeId(title),
     title,
-    cover: el('fCover').value.trim(),
+    // pakai foto baru kalau ada, kalau tidak pakai foto lama (saat mode edit)
+    cover: el('fCoverData').value || (oldAnime ? oldAnime.cover : ''),
     sinopsis: el('fSinopsis').value.trim(),
     characters: [...editingChars],
     tamat: el('fTamat').checked
   };
-  DB.save(anime);
+
+  try{
+    DB.save(anime);
+  }catch(err){
+    alert('Penyimpanan gagal — kemungkinan foto terlalu besar/kapasitas penuh. Coba foto lain atau hapus beberapa anime lama.');
+    return;
+  }
   resetForm();
   renderList();
 });
@@ -154,8 +199,9 @@ function renderList(){
 function loadIntoForm(a){
   el('animeId').value = a.id;
   el('fTitle').value = a.title;
-  el('fCover').value = a.cover || '';
+  el('fCoverData').value = a.cover || '';
   el('fCoverPreview').src = a.cover || '';
+  el('coverHint').textContent = 'Foto lama masih dipakai — pilih file baru untuk mengganti.';
   el('fSinopsis').value = a.sinopsis || '';
   el('fTamat').checked = !!a.tamat;
   editingChars = [...(a.characters || [])];
@@ -167,3 +213,4 @@ function loadIntoForm(a){
 /* ---------- init ---------- */
 applyTheme();
 if(DB.isLoggedIn()) showApp(); else showLogin();
+       
