@@ -1,0 +1,197 @@
+/* ============================================================
+   LIST ANIME — bergaya "arsip segel" (hanko / stempel jepang)
+   ============================================================ */
+
+:root{
+  --font-display:'Shippori Mincho', serif;
+  --font-body:'Inter', sans-serif;
+  --radius:2px;
+  --ease:cubic-bezier(.4,0,.2,1);
+}
+
+[data-theme="dark"]{
+  --bg:#0b0d12;
+  --bg-raised:#12151c;
+  --ink:#e9e4d8;
+  --ink-muted:#8b8a86;
+  --line: rgba(233,228,216,0.10);
+  --accent:#b0342d;
+  --accent-ink:#f2d9c9;
+  --shadow: 0 20px 50px rgba(0,0,0,0.45);
+}
+
+[data-theme="light"]{
+  --bg:#efe9dd;
+  --bg-raised:#faf7f0;
+  --ink:#201d17;
+  --ink-muted:#726c5f;
+  --line: rgba(32,29,23,0.10);
+  --accent:#a12c22;
+  --accent-ink:#fff6ee;
+  --shadow: 0 20px 50px rgba(32,29,23,0.12);
+}
+
+*{ box-sizing:border-box; }
+html,body{ height:100%; }
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:var(--font-body);
+  transition:background .35s var(--ease), color .35s var(--ease);
+  overflow-x:hidden;
+}
+
+/* ---------- topbar ---------- */
+.topbar{
+  height:68px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 22px;
+  position:sticky; top:0; z-index:20;
+  background:linear-gradient(to bottom, var(--bg) 70%, transparent);
+}
+
+.icon-btn{
+  background:none; border:none; cursor:pointer;
+  width:38px; height:38px;
+  display:flex; align-items:center; justify-content:center;
+}
+
+.hamburger span{
+  display:block; width:20px; height:2px; background:var(--ink);
+  margin:3px 0; transition:.25s var(--ease);
+}
+
+.ring-btn{
+  border-radius:50%;
+  background: radial-gradient(circle, transparent 0 40%, var(--accent) 41% 100%);
+  transition: transform .25s var(--ease);
+}
+.ring-btn:hover{ transform:scale(1.08); }
+
+.brand{ display:flex; align-items:baseline; gap:10px; letter-spacing:.14em; }
+.brand-mark{
+  font-family:var(--font-display); color:var(--accent); font-size:1.25rem;
+  border:1px solid var(--accent); width:26px; height:26px; border-radius:50%;
+  display:inline-flex; align-items:center; justify-content:center; line-height:1;
+}
+.brand-text{ font-family:var(--font-display); font-size:.95rem; font-weight:700; }
+
+/* ---------- overlay & panels ---------- */
+.overlay{
+  position:fixed; inset:0; background:rgba(0,0,0,.45);
+  opacity:0; pointer-events:none; transition:opacity .3s var(--ease);
+  z-index:29;
+}
+.overlay.show{ opacity:1; pointer-events:auto; }
+
+.panel{
+  position:fixed; top:0; bottom:0; width:min(360px,86vw);
+  background:var(--bg-raised); z-index:30;
+  padding:22px 22px 30px;
+  box-shadow:var(--shadow);
+  transition:transform .35s var(--ease);
+  display:flex; flex-direction:column;
+}
+.panel-left{ left:0; transform:translateX(-105%); }
+.panel-right{ right:0; transform:translateX(105%); }
+.panel.open{ transform:translateX(0); }
+
+.panel-head{
+  display:flex; align-items:center; justify-content:space-between;
+  padding-bottom:16px; margin-bottom:10px; border-bottom:1px solid var(--line);
+}
+.panel-title{ font-family:var(--font-display); font-size:1.1rem; font-weight:700; }
+.close-btn,.back-btn{
+  background:none; border:none; color:var(--ink); font-size:1.3rem; cursor:pointer;
+  width:30px; height:30px;
+}
+.panel-sub{ color:var(--ink-muted); font-size:.85rem; margin:0 0 14px; }
+
+.panel-nav{ display:flex; flex-direction:column; gap:4px; }
+.panel-link{
+  all:unset; cursor:pointer;
+  display:flex; flex-direction:column; gap:2px;
+  padding:14px 6px; border-bottom:1px solid var(--line);
+}
+.panel-link-label{ font-weight:600; letter-spacing:.03em; }
+.panel-link-sub{ font-size:.78rem; color:var(--ink-muted); }
+
+.note-body{
+  font-size:.92rem; line-height:1.7; color:var(--ink-muted);
+  white-space:pre-wrap;
+}
+
+.tamat-list{ list-style:none; margin:0; padding:0; overflow-y:auto; }
+.tamat-list li{
+  padding:12px 6px; border-bottom:1px solid var(--line);
+  cursor:pointer; font-size:.9rem; display:flex; align-items:center; gap:10px;
+}
+.tamat-list li:hover{ color:var(--accent); }
+.tamat-list li::before{
+  content:''; width:6px; height:6px; border-radius:50%; background:var(--accent);
+  flex:none;
+}
+.tamat-empty{ color:var(--ink-muted); font-size:.85rem; padding:12px 6px; }
+
+/* ---------- stage / carousel ---------- */
+.stage{ max-width:980px; margin:0 auto; padding:10px 24px 70px; }
+
+.stage-nav{
+  display:flex; align-items:center; justify-content:center; gap:26px;
+  margin-bottom:22px;
+}
+.arrow{
+  background:none; border:1px solid var(--line); color:var(--ink);
+  width:42px; height:42px; border-radius:50%; cursor:pointer;
+  font-size:1.1rem; transition:.25s var(--ease);
+}
+.arrow:hover{ border-color:var(--accent); color:var(--accent); }
+.stage-index{ font-size:.78rem; letter-spacing:.15em; color:var(--ink-muted); min-width:64px; text-align:center; }
+
+.card{
+  display:grid; grid-template-columns:1fr 1.15fr; gap:38px;
+  background:var(--bg-raised); border-radius:var(--radius);
+  box-shadow:var(--shadow); overflow:hidden;
+  animation:rise .45s var(--ease);
+}
+@keyframes rise{ from{ opacity:0; transform:translateY(10px);} to{opacity:1; transform:none;} }
+
+.card-cover{ position:relative; min-height:340px; background:#000; }
+.card-cover img{ width:100%; height:100%; object-fit:cover; display:block; }
+
+.tamat-stamp{
+  position:absolute; top:18px; right:18px;
+  border:2px solid var(--accent); color:var(--accent);
+  font-family:var(--font-display); font-weight:700; font-size:.78rem;
+  letter-spacing:.2em; padding:6px 10px; border-radius:50%;
+  transform:rotate(-14deg);
+  background:rgba(0,0,0,.35);
+  display:none;
+}
+.tamat-stamp.show{ display:inline-block; }
+
+.card-info{ padding:34px 34px 34px 4px; display:flex; flex-direction:column; gap:22px; }
+.card-title{ font-family:var(--font-display); font-size:2rem; margin:0; line-height:1.15; }
+
+.block-label{
+  display:block; font-size:.72rem; letter-spacing:.2em; text-transform:uppercase;
+  color:var(--accent); margin-bottom:8px;
+}
+.block-text{ margin:0; line-height:1.7; color:var(--ink); font-size:.95rem; }
+
+.char-list{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:6px; }
+.char-list li{
+  font-size:.92rem; padding:8px 0; border-bottom:1px solid var(--line);
+}
+
+.empty-state{ text-align:center; color:var(--ink-muted); padding:60px 20px; }
+.empty-state a{ color:var(--accent); }
+
+@media (max-width:720px){
+  .card{ grid-template-columns:1fr; }
+  .card-cover{ min-height:280px; }
+  .card-info{ padding:24px; }
+  }
