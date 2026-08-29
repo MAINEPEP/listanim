@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>List Anime</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body data-theme="dark">
+
+  <!-- overlay untuk menutup panel saat diklik di luar -->
+  <div class="overlay" id="overlay"></div>
+
+  <!-- TOP BAR -->
+  <header class="topbar">
+    <button class="icon-btn hamburger" id="btnMenu" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+
+    <div class="brand">
+      <span class="brand-mark">目</span>
+      <span class="brand-text">LIST ANIME</span>
+    </div>
+
+    <button class="icon-btn ring-btn" id="btnTamat" aria-label="Daftar Tamat"></button>
+  </header>
+
+  <!-- PANEL KIRI: MENU -->
+  <aside class="panel panel-left" id="panelMenu">
+    <div class="panel-head">
+      <span class="panel-title">Menu</span>
+      <button class="close-btn" data-close>&times;</button>
+    </div>
+    <nav class="panel-nav">
+      <a href="admin/admin.html" class="panel-link">
+        <span class="panel-link-label">Admin</span>
+        <span class="panel-link-sub">Kelola koleksi</span>
+      </a>
+      <button class="panel-link" id="btnTema">
+        <span class="panel-link-label">Tema</span>
+        <span class="panel-link-sub" id="temaState">Gelap</span>
+      </button>
+      <button class="panel-link" id="btnCatatan">
+        <span class="panel-link-label">Catatan</span>
+        <span class="panel-link-sub">Tentang arsip ini</span>
+      </button>
+    </nav>
+  </aside>
+
+  <!-- PANEL CATATAN -->
+  <aside class="panel panel-left panel-note" id="panelCatatan">
+    <div class="panel-head">
+      <button class="back-btn" id="btnBackFromCatatan">&larr;</button>
+      <span class="panel-title">Catatan</span>
+      <button class="close-btn" data-close>&times;</button>
+    </div>
+    <div class="note-body" id="noteBody">
+      <!-- diisi lewat js -->
+    </div>
+  </aside>
+
+  <!-- PANEL KANAN: TAMAT -->
+  <aside class="panel panel-right" id="panelTamat">
+    <div class="panel-head">
+      <span class="panel-title">Segel Tamat</span>
+      <button class="close-btn" data-close>&times;</button>
+    </div>
+    <p class="panel-sub">Anime yang sudah dikhatamkan.</p>
+    <ul class="tamat-list" id="tamatList"></ul>
+  </aside>
+
+  <!-- KONTEN UTAMA -->
+  <main class="stage">
+    <div class="stage-nav">
+      <button class="arrow arrow-left" id="btnPrev" aria-label="Sebelumnya">&larr;</button>
+      <span class="stage-index" id="stageIndex">01 / 01</span>
+      <button class="arrow arrow-right" id="btnNext" aria-label="Berikutnya">&rarr;</button>
+    </div>
+
+    <section class="card" id="animeCard">
+      <div class="card-cover">
+        <img id="cardImg" src="" alt="Cover anime">
+        <span class="tamat-stamp" id="cardStamp">TAMAT</span>
+      </div>
+      <div class="card-info">
+        <h1 class="card-title" id="cardTitle">Judul Anime</h1>
+        <div class="card-block">
+          <span class="block-label">Sinopsis</span>
+          <p class="block-text" id="cardSinopsis">Sinopsis akan tampil di sini.</p>
+        </div>
+        <div class="card-block">
+          <span class="block-label">Karakter Penting</span>
+          <ul class="char-list" id="cardChars"></ul>
+        </div>
+      </div>
+    </section>
+
+    <p class="empty-state" id="emptyState" hidden>
+      Belum ada anime yang ditambahkan. Masuk ke <a href="admin/admin.html">Admin</a> untuk mulai mengisi arsip.
+    </p>
+  </main>
+
+  <script src="js/db.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
