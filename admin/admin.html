@@ -72,12 +72,14 @@
           </label>
 
           <label class="field">
-            <span>URL Gambar Cover</span>
-            <input type="url" id="fCover" placeholder="https://...">
+            <span>Foto Cover (dari perangkat)</span>
+            <input type="file" id="fCoverFile" accept="image/*">
+            <span class="hint" id="coverHint">Pilih foto dari galeri/kamera HP. Otomatis dikompres agar ringan.</span>
           </label>
           <div class="cover-preview">
             <img id="fCoverPreview" alt="Preview cover">
           </div>
+          <input type="hidden" id="fCoverData">
 
           <label class="field">
             <span>Sinopsis</span>
@@ -120,4 +122,5 @@
   <script src="../js/db.js"></script>
   <script src="admin.js"></script>
 </body>
-</html>
+            </html>
+  
