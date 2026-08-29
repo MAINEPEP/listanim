@@ -29,7 +29,25 @@ function renderCard(){
   el('cardImg').src = a.cover || '';
   el('cardImg').alt = a.title;
   el('cardTitle').textContent = a.title;
-  el('cardSinopsis').textContent = a.sinopsis || '(sinopsis belum diisi)';
+
+  const sinopsisEl = el('cardSinopsis');
+  const toggleBtn = el('btnSinopsisToggle');
+  sinopsisEl.textContent = a.sinopsis || '(sinopsis belum diisi)';
+  sinopsisEl.classList.add('clamp');
+  toggleBtn.hidden = true;
+  toggleBtn.textContent = 'Selengkapnya ↓';
+
+  // cek setelah dirender: kalau teksnya memang lebih panjang dari 4 baris, tampilkan tombolnya
+  requestAnimationFrame(() => {
+    const isTruncated = sinopsisEl.scrollHeight > sinopsisEl.clientHeight + 2;
+    toggleBtn.hidden = !isTruncated;
+  });
+
+  toggleBtn.onclick = () => {
+    const collapsed = sinopsisEl.classList.toggle('clamp');
+    toggleBtn.textContent = collapsed ? 'Selengkapnya ↓' : 'Sembunyikan ↑';
+  };
+
   el('cardStamp').classList.toggle('show', !!a.tamat);
 
   const charUl = el('cardChars');
@@ -129,3 +147,4 @@ function init(){
 }
 
 init();
+       
