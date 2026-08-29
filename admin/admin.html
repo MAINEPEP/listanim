@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — List Anime</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="admin.css">
+</head>
+<body data-theme="dark">
+
+  <!-- ====== LAYAR LOGIN ====== -->
+  <section class="login-screen" id="loginScreen">
+    <form class="login-box" id="loginForm">
+      <span class="brand-mark big">目</span>
+      <h1 class="login-title">Masuk Admin</h1>
+      <p class="login-sub">Khusus pengelola arsip.</p>
+
+      <label class="field">
+        <span>Username</span>
+        <input type="text" id="loginUser" autocomplete="username" required>
+      </label>
+      <label class="field">
+        <span>Password</span>
+        <input type="password" id="loginPass" autocomplete="current-password" required>
+      </label>
+
+      <p class="login-error" id="loginError" hidden>Username atau password salah.</p>
+
+      <button type="submit" class="btn-primary">Masuk</button>
+      <a href="../index.html" class="back-link">&larr; Kembali ke halaman utama</a>
+    </form>
+  </section>
+
+  <!-- ====== PANEL ADMIN ====== -->
+  <div id="adminApp" hidden>
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-mark">目</span>
+        <span class="brand-text">ADMIN — LIST ANIME</span>
+      </div>
+      <button class="btn-ghost" id="btnLogout">Keluar</button>
+    </header>
+
+    <main class="admin-wrap">
+
+      <!-- Catatan -->
+      <section class="admin-card">
+        <div class="admin-card-head">
+          <h2>Catatan Arsip</h2>
+          <span class="hint">Teks ini muncul di menu "Catatan" halaman utama.</span>
+        </div>
+        <textarea id="noteInput" rows="4"></textarea>
+        <button class="btn-primary sm" id="btnSaveNote">Simpan Catatan</button>
+      </section>
+
+      <!-- Tambah / Edit anime -->
+      <section class="admin-card">
+        <div class="admin-card-head">
+          <h2 id="formTitle">Tambah Anime</h2>
+          <span class="hint">Isi cover, sinopsis, karakter penting, dan status tamat.</span>
+        </div>
+
+        <form id="animeForm">
+          <input type="hidden" id="animeId">
+
+          <label class="field">
+            <span>Judul</span>
+            <input type="text" id="fTitle" required placeholder="Contoh: Code Geass">
+          </label>
+
+          <label class="field">
+            <span>URL Gambar Cover</span>
+            <input type="url" id="fCover" placeholder="https://...">
+          </label>
+          <div class="cover-preview">
+            <img id="fCoverPreview" alt="Preview cover">
+          </div>
+
+          <label class="field">
+            <span>Sinopsis</span>
+            <textarea id="fSinopsis" rows="4" required></textarea>
+          </label>
+
+          <label class="field">
+            <span>Karakter Penting</span>
+            <div class="char-editor" id="charEditor"></div>
+            <div class="char-add-row">
+              <input type="text" id="fCharInput" placeholder="Nama karakter">
+              <button type="button" class="btn-ghost sm" id="btnAddChar">+ Tambah</button>
+            </div>
+          </label>
+
+          <label class="checkbox-field">
+            <input type="checkbox" id="fTamat">
+            <span>Tandai sebagai TAMAT (muncul di daftar segel kanan atas)</span>
+          </label>
+
+          <div class="form-actions">
+            <button type="submit" class="btn-primary">Simpan Anime</button>
+            <button type="button" class="btn-ghost" id="btnResetForm">Batal / Formulir Baru</button>
+          </div>
+        </form>
+      </section>
+
+      <!-- Daftar anime -->
+      <section class="admin-card">
+        <div class="admin-card-head">
+          <h2>Koleksi Saat Ini</h2>
+          <span class="hint" id="totalCount"></span>
+        </div>
+        <ul class="admin-list" id="adminList"></ul>
+      </section>
+
+    </main>
+  </div>
+
+  <script src="../js/db.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>
