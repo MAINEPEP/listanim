@@ -181,6 +181,22 @@ body{
   color:var(--accent); margin-bottom:8px;
 }
 .block-text{ margin:0; line-height:1.7; color:var(--ink); font-size:.95rem; }
+.block-text.clamp{
+  display:-webkit-box;
+  -webkit-line-clamp:4;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+}
+
+.synopsis-toggle{
+  all:unset; cursor:pointer;
+  display:inline-block; margin-top:8px;
+  font-size:.78rem; font-weight:600; letter-spacing:.04em;
+  color:var(--accent);
+  border-bottom:1px solid transparent;
+  transition:.2s var(--ease);
+}
+.synopsis-toggle:hover{ border-bottom-color:var(--accent); }
 
 .char-list{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:6px; }
 .char-list li{
@@ -194,4 +210,5 @@ body{
   .card{ grid-template-columns:1fr; }
   .card-cover{ min-height:280px; }
   .card-info{ padding:24px; }
-  }
+        }
+   
